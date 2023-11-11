@@ -55,10 +55,6 @@ contract ContentMonetization is Ownable {
         require(bytes(_username).length > 0, "Username cannot be empty");
         require(bytes(_title).length > 0, "Title cannot be empty");
         require(bytes(_description).length > 0, "Description cannot be empty");
-        require(
-            bytes(creators[msg.sender].username).length == 0,
-            "Creator already added"
-        );
 
         creators[msg.sender] = Creator(_username, 0, new uint256[](0));
         creatorList.push(msg.sender);
@@ -126,7 +122,7 @@ contract ContentMonetization is Ownable {
             "Subscription already purchased"
         );
 
-        payable(_creator).transfer(1 ether);
+        payable(_creator).transfer(0.0001 ether);
         subscriptions[msg.sender][_contentIndex] = true;
 
         emit SubscriptionPurchased(msg.sender, _creator, _contentIndex);

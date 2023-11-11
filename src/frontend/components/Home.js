@@ -47,7 +47,7 @@ const Home = ({ blockChain, currentAccount }) => {
     try {
 
       const post = posts[index];
-      const tipAmount = ethers.utils.parseEther("1.0");
+      const tipAmount = ethers.utils.parseEther("0.0001");
 
       await blockChain.purchaseSubscription(post.creator, index, {
         value: tipAmount,
@@ -65,7 +65,7 @@ const Home = ({ blockChain, currentAccount }) => {
   const handleLike = async (index) => {
     try {
       const post = posts[index];
-      const tipAmount = ethers.utils.parseEther("0.1");
+      const tipAmount = ethers.utils.parseEther("0.0001");
 
       await blockChain.likeContent(index, {
         value: tipAmount,
