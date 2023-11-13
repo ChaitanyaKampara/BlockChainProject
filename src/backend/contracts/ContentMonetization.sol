@@ -89,13 +89,17 @@ contract ContentMonetization is Ownable {
         uint256 tipAmount = msg.value;
         require(tipAmount > 0, "Invalid tip amount");
 
-        content.likes += 1;
+        uint256 creatorShare = (tipAmount * 80) / 100;
+        uint256 ownerShare = tipAmount - creatorShare;
 
         address payable creator = payable(content.creator);
-        creator.transfer(tipAmount);
+        address payable ownerAddress = payable(owner());
+        creator.transfer(creatorShare);
+        ownerAddress.transfer(ownerShare);
 
+        content.likes += 1;
         content.earnings += tipAmount;
-        creators[creator].totalTips += tipAmount;
+        creators[creator].totalTips += creatorShare;
 
         emit ContentLiked(
             content.creator,
@@ -117,10 +121,10 @@ contract ContentMonetization is Ownable {
 
         Content storage content = posts[_contentIndex];
         require(content.isPaid, "Content is not paid");
-        require(
-            !subscriptions[msg.sender][_contentIndex],
-            "Subscription already purchased"
-        );
+        // require(
+        //     !subscriptions[msg.sender][_contentIndex],
+        //     "Subscription already purchased"
+        // );
 
         payable(_creator).transfer(0.0001 ether);
         subscriptions[msg.sender][_contentIndex] = true;

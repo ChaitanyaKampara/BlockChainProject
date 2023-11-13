@@ -9,6 +9,10 @@ const Home = ({ blockChain, currentAccount }) => {
   const [purchasedPosts, setPurchasedPosts] = useState(new Set());
 
   useEffect(() => {
+    const storedPurchasedPosts = localStorage.getItem("purchasedPosts");
+    if (storedPurchasedPosts) {
+      setPurchasedPosts(new Set(JSON.parse(storedPurchasedPosts)));
+    }
     async function fetchPosts() {
       if (!blockChain) return;
 
@@ -53,7 +57,15 @@ const Home = ({ blockChain, currentAccount }) => {
         value: tipAmount,
       });
 
-      setPurchasedPosts(new Set(purchasedPosts).add(index));
+      setPurchasedPosts((prevPurchasedPosts) => {
+        const newPurchasedPosts = new Set(prevPurchasedPosts);
+        newPurchasedPosts.add(index);
+        localStorage.setItem(
+          "purchasedPosts",
+          JSON.stringify(Array.from(newPurchasedPosts))
+        );
+        return newPurchasedPosts;
+      });
 
       alert("Purchased successfully!");
     } catch (error) {
