@@ -51,10 +51,10 @@ const Home = ({ blockChain, currentAccount }) => {
     try {
 
       const post = posts[index];
-      const tipAmount = ethers.utils.parseEther("0.0001");
+      const purchaseAmount = ethers.utils.parseEther("0.001");
 
       await blockChain.purchaseSubscription(post.creator, index, {
-        value: tipAmount,
+        value: purchaseAmount,
       });
 
       setPurchasedPosts((prevPurchasedPosts) => {

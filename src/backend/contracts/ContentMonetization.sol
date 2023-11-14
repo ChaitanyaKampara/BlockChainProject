@@ -121,12 +121,17 @@ contract ContentMonetization is Ownable {
 
         Content storage content = posts[_contentIndex];
         require(content.isPaid, "Content is not paid");
-        // require(
-        //     !subscriptions[msg.sender][_contentIndex],
-        //     "Subscription already purchased"
-        // );
+        uint256 purchaseAmount = msg.value;
+        require(purchaseAmount > 0, "Invalid amount");
 
-        payable(_creator).transfer(0.0001 ether);
+        uint256 creatorShare = (purchaseAmount * 80) / 100;
+        uint256 ownerShare = purchaseAmount - creatorShare;
+
+        address payable creator = payable(_creator);
+        address payable ownerAddress = payable(owner());
+        creator.transfer(creatorShare);
+        ownerAddress.transfer(ownerShare);
+
         subscriptions[msg.sender][_contentIndex] = true;
 
         emit SubscriptionPurchased(msg.sender, _creator, _contentIndex);
