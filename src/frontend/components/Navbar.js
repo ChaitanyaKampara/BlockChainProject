@@ -1,6 +1,6 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { Navbar, Nav, Button, Container } from "react-bootstrap";
-
 
 const Navigation = ({ web3Handler, account }) => {
   return (
@@ -11,7 +11,7 @@ const Navigation = ({ web3Handler, account }) => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
+          <Nav className="mx-auto">
             <Nav.Link as={Link} to="/" className="nav-link">
               Home
             </Nav.Link>
@@ -25,12 +25,29 @@ const Navigation = ({ web3Handler, account }) => {
           <Nav>
             {account ? (
               <Nav.Link as={Link} to="/" className="button nav-button btn-sm mx-4">
-                <Button variant="outline-light" className="account-button">
+                <Button
+                  variant="outline-light"
+                  className="account-button"
+                  style={{
+                    color: "#fff",
+                    backgroundColor: "#007bff", 
+                    borderColor: "#007bff", 
+                  }}
+                >
                   {account.slice(0, 7) + "..." + account.slice(38, 42)}
                 </Button>
               </Nav.Link>
             ) : (
-              <Button onClick={web3Handler} variant="outline-light">
+              <Button
+                onClick={web3Handler}
+                variant="outline-light"
+                className="connect-button"
+                style={{
+                  color: "#fff",
+                  backgroundColor: "#007bff", 
+                  borderColor: "#007bff",
+                }}
+              >
                 Connect Wallet
               </Button>
             )}
