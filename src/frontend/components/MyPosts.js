@@ -8,29 +8,31 @@ const MyPosts = ({ blockChain, currentAccount }) => {
 
   useEffect(() => {
     async function fetchMyPosts() {
-      if (!blockChain || !currentAccount) return;
+      if (!blockChain) return;
 
       try {
         setLoading(true);
 
-        const creatorContentList = await blockChain.getCreatorContent(
-          currentAccount
-        );
-
+        const postCount = await blockChain.getPostCount();
         const fetchedPosts = [];
 
-        for (let i = 0; i < creatorContentList.length; i++) {
-          const contentIndex = creatorContentList[i];
+        for (let i = 0; i < postCount; i++) {
           const [creator, index, title, description, likes, isPaid] =
-            await blockChain.getPost(contentIndex);
-          fetchedPosts.push({
-            creator,
-            index: Number(index),
-            title: title,
-            description: description,
-            likes: Number(likes),
-            isPaid,
-          });
+            await blockChain.getPost(i);
+            console.log(creator);
+            if(creator.toLowerCase()===currentAccount){
+              fetchedPosts.push({
+                creator: creator.toLowerCase(),
+                index: Number(index),
+                title: title.toString(),
+                description: description.toString(),
+                likes: Number(likes),
+                isPaid,
+              });
+
+            }
+
+          
         }
 
         setMyPosts(fetchedPosts);
